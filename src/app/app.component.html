@@ -1,0 +1,160 @@
+<h1>Formulario</h1>
+<form (ngSubmit)="onRegister()" #myForm="ngForm">
+    <div class="input-group">
+        <label for="name">Nombre</label>
+        <input type="text" name="name" required id="name" [(ngModel)]="register.name" />
+        <p>Mensajes de error</p>
+    </div>
+    <div class="input-group">
+        <label for="email">Email</label>
+        <input type="email" name="email"  required id="email" [(ngModel)]="register.email" />
+        <p>Mensajes de error</p>
+    </div>
+    <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" name="password"  required id="password" [(ngModel)]="register.password" />
+        <p>Mensajes de error</p>
+    </div>
+    <button [disabled]="myForm.invalid"  type="submit">Registrar</button>
+    <!-- con el evento ngsubmit, se acciona el envio del formulario -->
+    <button type="button">Accion</button>
+    <!-- siempre se deben colocar los tipos en los botones, con submit se enmvia la info del formulario, si es para algo mas, se usa el tipo button -->
+</form>
+<h1>NgClass & NgStyle</h1>
+
+<input type="text" required #nameInput4="ngModel" [(ngModel)]="person.name">
+<hr class="line-error" [ngClass]="{
+        'valid': nameInput4.valid,
+        'invalid': nameInput4.invalid
+    }" />
+<!-- funciona como un switch, en caso de que se cumpla la condicion, se usara el estilo que esta antes de los dos puntos -->
+<p class="message-error" [class.invalid]="nameInput4.invalid">
+    El campo es requerido
+</p>
+<div class="styles">
+    <div>
+        <input type="number" [(ngModel)]="box.width" />
+        <input type="number" [(ngModel)]="box.height" />
+        <input type="color" [(ngModel)]="box.background" />
+    </div>
+    <div>
+        <div [ngStyle]="{
+            'width.px': box.width,
+            'height.px': box.height,
+            'background-color': box.background,
+            'display': 'block'
+        }"></div>
+    </div>
+</div>
+<!-- con ngStyle podemos crear estilos interactivos con el usuario -->
+<hr />
+
+<h1>Class & Style</h1>
+<input type="text" required #nameInput2="ngModel" [(ngModel)]="person.name">
+<p class="message-error" [class.invalid]="nameInput2.invalid">
+    El campo es requerido
+</p>
+<label>Nombre</label>
+<input type="text" required #nameInput3="ngModel" [(ngModel)]="person.name">
+<p [style.font-style]="nameInput3.invalid ? 'italic' : 'normal'">Texto Texto Texto Texto</p>
+<!-- en esta linea hicimos un estilo in line -->
+<div class="styles">
+    <div>
+        <input type="text" [(ngModel)]="widthImg">
+    </div>
+    <div>
+        <img [style.width.px]="widthImg" [src]="person.avatar" />
+        <!-- en esta linea hicimos un estilo in line, con la que modificamos el tamaño de una imagen -->
+    </div>
+</div>
+
+
+<hr />
+<h1>ngSwitch</h1>
+<input type="text" required [(ngModel)]="person.name" />
+<div [ngSwitch]="person.name">
+    <p *ngSwitchCase="'Nicolas'">
+        La persona es Nicolas
+    </p>
+    <p *ngSwitchCase="'Edwin'">
+        La persona es Edwin
+    </p>
+    <p *ngSwitchCase="'Joel'">
+        La persona es Joel
+    </p>
+    <p *ngSwitchDefault>No hace match</p>
+    <!-- En este caso es importante resaltar que aunque parezca un switch corriente, el *ngSwitchDefault es el que se muestra en caso de que no se cumpla ninguna de las condiciones -->
+</div>
+
+<h1>*ngFor Objs</h1>
+<div class="products--grid">
+    <div *ngFor="let product of products">
+        <img [src]="product.image" alt="image">
+        <h2>{{product.price}}</h2>
+        <p>{{product.name}}</p>
+    </div>
+    <!-- el *ngFor tambien se puede usar para iterar entidades iterables, como un array, en este caso un arreglo de productos -->
+</div>
+
+<h1>*ngFor</h1>
+<input type="text" [(ngModel)]="newName">
+<button (click)="addName()">Add name</button>
+<!-- ul es una lista de elementos -->
+<ul>
+    <li *ngIf="names.length === 0">No hay nombres</li>
+    <!-- li es cada uno de los elementos de la lista -->
+    <li *ngFor="let value of names; index as i">
+        {{i}} {{value}}
+        <button (click)="deleteName(i)">Delete</button>
+    </li>
+</ul>
+
+<h1>*ngIf</h1>
+<input type="text" [(ngModel)]="person.name">
+<p *ngIf="person.name == 'Edwin'">Soy Edwin</p>
+<p *ngIf="person.name == 'Felipe' && person.age == 18; else elseBlock">Soy Felipe</p>
+<!-- los *ngIf son directivas que deben empezar con *, funcionan como un condicional cualquiera, el else se representa con un ng-template, en este caso, si el if no se cumple, se ejecutara elseBlock-->
+<ng-template #elseBlock>
+    <p>Bloque de else</p>
+</ng-template>
+
+<h1>NgModel</h1>
+<input type="text" required #nameInput="ngModel" [(ngModel)]="person.name">
+<!-- nameInput es una variable template de un ngModel, entonces podemos usar valid (required) o cualquier validacion nativa de HTML-->
+<p>Nombre {{person.name}}</p>
+<p>Valid: {{nameInput.valid}}</p>
+<input type="number" min="10" max="22" #nameInput="ngModel" [(ngModel)]="person.age">
+<p>Edad {{person.age}}</p>
+<!-- para usar ngModel debemos importar el formsModule,  permite el intercambio de datos de forma bidireccional entre el componente y la vista. Lo que suceda en el componente, se verá reflejado en la vista. -->
+
+<h1>Eventos</h1>
+<button [disabled]="btnDisabled">Enviar</button>
+<button (click)="toggleButton()">Toggle Button</button>
+<p>Edad {{person.age}}</p>
+<button (click)="ageIncrease()">Age ++</button>
+<div class="box" (scroll)="onScroll($event)">
+    <!-- con $event capturamos eventos -->
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima voluptatem labore ab totam non quis, cum
+        obcaecati numquam ipsam optio, tenetur, vel facere dolores fugiat officia esse. Beatae, hic omnis
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quas, soluta facere cumque excepturi enim nam omnis
+        blanditiis atque non ipsam obcaecati error cum culpa recusandae. Assumenda minima culpa impedit eos?.</p>
+</div>
+<hr>
+<!-- Los eventos se utilizan para escuchar y responder a acciones del usuario, para esto se debe usar una funcion de nuestro app.component -->
+
+<h1>Propiedades</h1>
+<button [disabled]="btnDisabled">Enviar</button>
+<input type="text" [value]="person.name" (keyup)="changeName($event)">
+<!-- keyup captura el evento de cada vez que tocamos una tecla -->
+<p>Nombre {{person.name}}</p>
+<progress max="100" [value]="person.age"></progress>
+<img width="100" [src]="img" />
+<!-- El property biding [] es para controlar propiedades de elementos html, botones, values contenido, etc.. -->
+<hr>
+
+<h1>Hola mundo</h1>
+<h2>{{'Hola Mundo'.repeat(5)}}</h2>
+<p> 3 + 3 = {{ 3 + 3 }}</p>
+<h3>Hola, soy {{ name }} y tengo {{ age }} años</h3>
+<img width="100" src={{img}} alt="image">
+<!-- En el momento que usamos propiedades como img, name o age, estamos haciendo string interpolation -->
